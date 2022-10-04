@@ -39,25 +39,32 @@ export function PokemonVoter({ pageId, pokemonA, pokemonB }: Props) {
 
   return (
     <div className="flex">
-      <div>
-        <button onClick={onClick(pokemonA.id, pokemonB.id)}>
-          <PokeImage id={pokemonA.id} alt={pokemonA.name} />
-        </button>
+      <button
+        className="hover:bg-white hover:shadow-md hover:dark:bg-neutral-800 hover:dark:shadow-sm hover:dark:shadow-black"
+        onClick={onClick(pokemonA.id, pokemonB.id)}
+      >
+        <PokeImage id={pokemonA.id} alt={pokemonA.name} />
+      </button>
 
-        <div>{pokemonA.name}</div>
-      </div>
-      <div>
-        <button onClick={onClick(pokemonB.id, pokemonA.id)}>
-          <PokeImage id={pokemonB.id} alt={pokemonB.name} />
-        </button>
-        <div>{pokemonB.name}</div>
-      </div>
+      <button
+        className="hover:bg-white hover:shadow-md hover:dark:bg-neutral-800 hover:dark:shadow-sm hover:dark:shadow-black"
+        onClick={onClick(pokemonB.id, pokemonA.id)}
+      >
+        <PokeImage id={pokemonB.id} alt={pokemonB.name} />
+      </button>
     </div>
   );
 }
 
 function PokeImage({ id, alt }: { id: number; alt: string }) {
   return (
-    <Image src={`/pokemon/${id + 1}.png`} alt={alt} width={192} height={192} style={{ imageRendering: "pixelated" }} />
+    <Image
+      priority
+      src={`/pokemon/${id + 1}.png`}
+      alt={alt}
+      width={192}
+      height={192}
+      style={{ imageRendering: "pixelated" }}
+    />
   );
 }

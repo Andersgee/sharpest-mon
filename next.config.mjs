@@ -11,6 +11,7 @@ import withPWA from "next-pwa";
  * @constraint {{import('next').NextConfig}}
  */
 function defineNextConfig(config) {
+  //return withPWA({ dest: "public", disable: true })(withPlausibleProxy()(config));
   return withPWA({ dest: "public" })(withPlausibleProxy()(config));
 }
 

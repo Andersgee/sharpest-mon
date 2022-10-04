@@ -1,5 +1,6 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import type { GetStaticProps, NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Head } from "src/components/Head";
@@ -27,20 +28,48 @@ const Page: NextPage<Props> = ({ stats }) => {
         domainUrl="https://sharpest.andyfx.net"
         url="https://sharpest.andyfx.net"
       />
-      <ThemeToggleButton />
-      <Link href={href}>random page</Link>
-      <table>
-        <tbody>
-          {stats.map((stat) => (
-            <tr key={stat.id} className="">
-              <td>{ALL_MONS[stat.id]}</td>
-              <td>{stat.percent}%</td>
-              <td>for: {stat.votesFor}</td>
-              <td>against: {stat.votesAgainst}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="flex justify-end">
+        <ThemeToggleButton />
+      </div>
+
+      <div className="flex flex-1 justify-center">
+        <div className="text-center">
+          <h1 className="mb-12">
+            <span className="text-lg font-thin italic">The age old question</span>
+            <br />
+            <span className="text-4xl font-bold">Who is sharper?</span>
+          </h1>
+
+          <Link href={href}>
+            <a className="inline-block bg-blue-600 p-4 text-lg text-neutral-100 hover:bg-blue-500">
+              cast your vote here
+            </a>
+          </Link>
+          <p className="pt-8 text-right">score</p>
+          <table className="mx-auto">
+            <tbody>
+              {stats.map((stat) => (
+                <tr key={stat.id} className="border-b-2">
+                  <td className="pr-1">
+                    <Image
+                      src={`/pokemon/${stat.id + 1}.png`}
+                      alt={ALL_MONS[stat.id]}
+                      width={48}
+                      height={48}
+                      style={{ imageRendering: "pixelated" }}
+                    />
+                  </td>
+                  <td className=" text-left capitalize">{ALL_MONS[stat.id]}</td>
+                  <td className="text-gray-500">{stat.percent}%</td>
+                  <td className="pl-2">
+                    ({stat.votesFor}-{stat.votesAgainst})
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
   );
 };

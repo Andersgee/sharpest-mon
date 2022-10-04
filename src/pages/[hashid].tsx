@@ -23,6 +23,11 @@ const Page: NextPage<Props> = ({ pageId, pokemonA, pokemonB, stats }) => {
     return <div>fallback</div>;
   }
 
+  const text0 = "In this particular comparison, you are the first!";
+  const text1 = `In this particular comparison, ${stats.percentForAWhenBoth}% of votes went to ${pokemonA.name}.`;
+  const text2 = `In this particular comparison, ${stats.percentForBWhenBoth}% of votes went to ${pokemonB.name}.`;
+  const text3 = "In this particular comparison, its dead even.";
+
   return (
     <>
       <Head
@@ -31,12 +36,39 @@ const Page: NextPage<Props> = ({ pageId, pokemonA, pokemonB, stats }) => {
         domainUrl="https://sharpest.andyfx.net"
         url="https://sharpest.andyfx.net"
       />
-      <ThemeToggleButton />
-      <PokemonVoter pageId={pageId} pokemonA={pokemonA} pokemonB={pokemonB} />
-      <div>stats: {JSON.stringify(stats)}</div>
-      <Link href="/">
-        <a>view results</a>
-      </Link>
+      <div className="flex justify-end">
+        <ThemeToggleButton />
+      </div>
+
+      <div className="flex justify-center text-center">
+        <div>
+          <h1 className="mb-8">
+            <span className="text-lg font-thin italic">Who is sharper?</span>
+            <br />
+            <span className="text-4xl font-bold">
+              {pokemonA.name} <span className="px-2 text-xl">vs</span> {pokemonB.name}
+            </span>
+          </h1>
+          <div className="flex justify-center">
+            <PokemonVoter pageId={pageId} pokemonA={pokemonA} pokemonB={pokemonB} />
+          </div>
+
+          <p className="mt-8 border-b-2 py-4">Click on a pokemon!</p>
+          <p className="mt-2">
+            {stats.percentForAWhenBoth === 0 && stats.percentForBWhenBoth === 0 && text0}
+            {stats.percentForAWhenBoth > stats.percentForBWhenBoth && text1}
+            {stats.percentForAWhenBoth < stats.percentForBWhenBoth && text2}
+            {stats.percentForAWhenBoth === stats.percentForBWhenBoth &&
+              (stats.percentForAWhenBoth > 0 || stats.percentForBWhenBoth > 0) &&
+              text3}
+          </p>
+          <Link href="/">
+            <a className="mt-10 inline-block bg-blue-600 p-4 text-lg text-neutral-100 hover:bg-blue-500">
+              see all results here
+            </a>
+          </Link>
+        </div>
+      </div>
     </>
   );
 };
@@ -134,6 +166,8 @@ async function getVotes(a: number, b: number) {
   return { votesPokeA, votesPokeB };
 }
 
+const percent = (x: number) => Math.round(x * 100);
+
 type Stats = ReturnType<typeof calcStats>;
 
 function calcStats(votes: Votes) {
@@ -144,5 +178,9 @@ function calcStats(votes: Votes) {
   const votesForB = votes.votesPokeB?.votesFor.length || 0;
   const votesForAWhenBoth = votes.votesPokeA?.votesFor.filter((x) => x.againstPokemonId === idB).length || 0;
   const votesForBWhenBoth = votes.votesPokeB?.votesFor.filter((x) => x.againstPokemonId === idA).length || 0;
-  return { votesForA, votesForB, votesForAWhenBoth, votesForBWhenBoth };
+
+  const percentForAWhenBoth = percent(votesForAWhenBoth / (votesForAWhenBoth + votesForBWhenBoth) || 0);
+  const percentForBWhenBoth = percent(votesForBWhenBoth / (votesForAWhenBoth + votesForBWhenBoth) || 0);
+
+  return { votesForA, votesForB, votesForAWhenBoth, votesForBWhenBoth, percentForAWhenBoth, percentForBWhenBoth };
 }
