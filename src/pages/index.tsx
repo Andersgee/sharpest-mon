@@ -23,8 +23,8 @@ const Page: NextPage<Props> = ({ stats }) => {
   return (
     <>
       <Head
-        title="Sharpest pokemon"
-        description="Which pokemon is sharper?"
+        title="Sharpest-mon"
+        description="Who is sharper?"
         domainUrl="https://sharpest.andyfx.net"
         url="https://sharpest.andyfx.net"
       />

@@ -6,7 +6,7 @@ import { Head } from "src/components/Head";
 import { PokemonVoter } from "src/components/PokemonVoter";
 import { ThemeToggleButton } from "src/components/ThemeToggleButton";
 import { prisma } from "src/server/db/client";
-import { numberFromHashidParam } from "src/utils/hashids";
+import { hashidFromNumber, numberFromHashidParam } from "src/utils/hashids";
 import { ALL_MONS, N_MONS, type Pokemon } from "src/utils/mons";
 
 type Props = {
@@ -31,10 +31,19 @@ const Page: NextPage<Props> = ({ pageId, pokemonA, pokemonB, stats }) => {
   return (
     <>
       <Head
-        title="Sharpest pokemon"
-        description="Which pokemon is sharper?"
+        title="Sharpest-mon"
+        description={`Who is sharper? ${pokemonA.name} vs ${pokemonB.name}. ${
+          stats.percentForAWhenBoth > stats.percentForBWhenBoth
+            ? `${pokemonA.name} is winning.`
+            : `${pokemonB.name} is winning.`
+        }`}
         domainUrl="https://sharpest.andyfx.net"
-        url="https://sharpest.andyfx.net"
+        url={`https://sharpest.andyfx.net/${hashidFromNumber(pageId)}`}
+        imageUrl={
+          stats.percentForAWhenBoth > stats.percentForBWhenBoth
+            ? `/pokemon/${pokemonA.id + 1}.png`
+            : `/pokemon/${pokemonB.id + 1}.png`
+        }
       />
       <div className="flex justify-end">
         <ThemeToggleButton />
