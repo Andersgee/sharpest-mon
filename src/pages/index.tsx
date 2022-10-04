@@ -1,5 +1,7 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import type { GetStaticProps, NextPage } from "next";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Head } from "src/components/Head";
 import { ThemeToggleButton } from "src/components/ThemeToggleButton";
 import { prisma } from "src/server/db/client";
@@ -11,6 +13,12 @@ type Props = {
 };
 
 const Page: NextPage<Props> = ({ stats }) => {
+  const [href, setHref] = useState("");
+
+  useEffect(() => {
+    setHref(randomPageHref());
+  }, []);
+
   return (
     <>
       <Head
@@ -20,7 +28,7 @@ const Page: NextPage<Props> = ({ stats }) => {
         url="https://sharpest.andyfx.net"
       />
       <ThemeToggleButton />
-      <a href={randomPageHref()}>random page</a>
+      <Link href={href}>random page</Link>
       <table>
         <tbody>
           {stats.map((stat) => (
@@ -89,5 +97,5 @@ function calcStats(pokemons: Pokemons) {
       votesAgainst: p._count.votesAgainst,
       percent: percent(p._count.votesFor / (p._count.votesFor + p._count.votesAgainst) || 0),
     }))
-    .sort((a, b) => b.percent - a.percent);
+    .sort((a, b) => b.percent - a.percent || b.votesFor - a.votesFor);
 }

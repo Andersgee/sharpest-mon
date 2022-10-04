@@ -1,20 +1,22 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Head } from "src/components/Head";
+import { PokemonVoter } from "src/components/PokemonVoter";
 import { ThemeToggleButton } from "src/components/ThemeToggleButton";
 import { prisma } from "src/server/db/client";
-import { numberFromHashidParam, randomPageHref } from "src/utils/hashids";
+import { numberFromHashidParam } from "src/utils/hashids";
 import { ALL_MONS, N_MONS, type Pokemon } from "src/utils/mons";
 
 type Props = {
+  pageId: number;
   pokemonA: Pokemon;
   pokemonB: Pokemon;
   stats: Stats;
 };
 
-const Page: NextPage<Props> = ({ pokemonA, pokemonB, stats }) => {
+const Page: NextPage<Props> = ({ pageId, pokemonA, pokemonB, stats }) => {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -30,27 +32,14 @@ const Page: NextPage<Props> = ({ pokemonA, pokemonB, stats }) => {
         url="https://sharpest.andyfx.net"
       />
       <ThemeToggleButton />
-      <a href={randomPageHref()}>random page</a>
+      <PokemonVoter pageId={pageId} pokemonA={pokemonA} pokemonB={pokemonB} />
       <div>stats: {JSON.stringify(stats)}</div>
-      <div className="flex">
-        <div>
-          <PokeImage id={pokemonA.id} name={pokemonA.name} />
-          <div>{pokemonA.name}</div>
-        </div>
-        <div>
-          <PokeImage id={pokemonB.id} name={pokemonB.name} />
-          <div>{pokemonB.name}</div>
-        </div>
-      </div>
+      <Link href="/">
+        <a>view results</a>
+      </Link>
     </>
   );
 };
-
-function PokeImage({ id, name }: { id: number; name: string }) {
-  return (
-    <Image src={`/pokemon/${id + 1}.png`} alt={name} width={192} height={192} style={{ imageRendering: "pixelated" }} />
-  );
-}
 
 export default Page;
 
@@ -70,7 +59,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const votes = await getVotes(p.pokemonA.id, p.pokemonB.id);
 
     const stats = calcStats(votes);
-    const props: Props = { pokemonA: p.pokemonA, pokemonB: p.pokemonB, stats };
+    const props: Props = { pageId: p.n, pokemonA: p.pokemonA, pokemonB: p.pokemonB, stats };
     return {
       props,
       revalidate: 10, //at most once every 10 seconds
@@ -106,7 +95,7 @@ function pokemonsFromHashid(param: Param) {
     name: nameB,
   };
 
-  return { pokemonA, pokemonB };
+  return { n, pokemonA, pokemonB };
 }
 
 type Votes = inferAsyncReturnType<typeof getVotes>;

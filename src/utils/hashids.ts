@@ -27,12 +27,13 @@ export function numberFromHashidParam(param: Param) {
   return n;
 }
 
-export function randomPageHref(): string {
+export function randomPageHref(currentId = 0): string {
   const a = Math.floor(Math.random() * N_MONS);
   const b = Math.floor(Math.random() * N_MONS);
   if (a === b) return randomPageHref();
 
   const id = a * N_MONS + b;
+  if (id === currentId) return randomPageHref(); //prevent returning same hashid that currentId represents.
   const hashid = hashids.encode(id);
   return `/${hashid}`;
 }
