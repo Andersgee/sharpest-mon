@@ -20,14 +20,16 @@ const Page: NextPage<Props> = ({ stats }) => {
       />
       <ThemeToggleButton />
       <table>
-        {stats.map((stat) => (
-          <tr key={stat.id} className="">
-            <td>{ALL_MONS[stat.id]}</td>
-            <td>{stat.percent}%</td>
-            <td>for: {stat.votesFor}</td>
-            <td>against: {stat.votesAgainst}</td>
-          </tr>
-        ))}
+        <tbody>
+          {stats.map((stat) => (
+            <tr key={stat.id} className="">
+              <td>{ALL_MONS[stat.id]}</td>
+              <td>{stat.percent}%</td>
+              <td>for: {stat.votesFor}</td>
+              <td>against: {stat.votesAgainst}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </>
   );
@@ -59,7 +61,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 type Pokemons = inferAsyncReturnType<typeof getPokemons>;
 
-const getPokemons = async () => {
+async function getPokemons() {
   return await prisma.pokemon.findMany({
     select: {
       id: true,
@@ -71,7 +73,7 @@ const getPokemons = async () => {
       },
     },
   });
-};
+}
 
 const percent = (x: number) => Math.round(x * 100);
 

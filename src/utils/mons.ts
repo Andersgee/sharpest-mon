@@ -1,3 +1,8 @@
+export type Pokemon = {
+  id: number;
+  name: string;
+};
+
 export const ALL_MONS = [
   "bulbasaur",
   "ivysaur",
@@ -493,3 +498,5 @@ export const ALL_MONS = [
   "shaymin-land",
   "arceus",
 ];
+
+export const N_MONS = ALL_MONS.length;
