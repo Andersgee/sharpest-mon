@@ -1,9 +1,11 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import { Head } from "src/components/Head";
 import { ThemeToggleButton } from "src/components/ThemeToggleButton";
 import { prisma } from "src/server/db/client";
-import { numberFromHashidParam } from "src/utils/hashids";
+import { numberFromHashidParam, randomPageHref } from "src/utils/hashids";
 import { ALL_MONS, N_MONS, type Pokemon } from "src/utils/mons";
 
 type Props = {
@@ -13,6 +15,12 @@ type Props = {
 };
 
 const Page: NextPage<Props> = ({ pokemonA, pokemonB, stats }) => {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>fallback</div>;
+  }
+
   return (
     <>
       <Head
@@ -22,12 +30,27 @@ const Page: NextPage<Props> = ({ pokemonA, pokemonB, stats }) => {
         url="https://sharpest.andyfx.net"
       />
       <ThemeToggleButton />
+      <a href={randomPageHref()}>random page</a>
       <div>stats: {JSON.stringify(stats)}</div>
-      <div>pokemonA: {JSON.stringify(pokemonA)}</div>
-      <div>pokemonB: {JSON.stringify(pokemonB)}</div>
+      <div className="flex">
+        <div>
+          <PokeImage id={pokemonA.id} name={pokemonA.name} />
+          <div>{pokemonA.name}</div>
+        </div>
+        <div>
+          <PokeImage id={pokemonB.id} name={pokemonB.name} />
+          <div>{pokemonB.name}</div>
+        </div>
+      </div>
     </>
   );
 };
+
+function PokeImage({ id, name }: { id: number; name: string }) {
+  return (
+    <Image src={`/pokemon/${id + 1}.png`} alt={name} width={192} height={192} style={{ imageRendering: "pixelated" }} />
+  );
+}
 
 export default Page;
 

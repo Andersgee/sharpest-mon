@@ -3,6 +3,7 @@ import type { GetStaticProps, NextPage } from "next";
 import { Head } from "src/components/Head";
 import { ThemeToggleButton } from "src/components/ThemeToggleButton";
 import { prisma } from "src/server/db/client";
+import { randomPageHref } from "src/utils/hashids";
 import { ALL_MONS } from "src/utils/mons";
 
 type Props = {
@@ -19,6 +20,7 @@ const Page: NextPage<Props> = ({ stats }) => {
         url="https://sharpest.andyfx.net"
       />
       <ThemeToggleButton />
+      <a href={randomPageHref()}>random page</a>
       <table>
         <tbody>
           {stats.map((stat) => (

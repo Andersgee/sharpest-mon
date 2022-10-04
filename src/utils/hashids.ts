@@ -1,5 +1,6 @@
 import Hashids from "hashids";
 import { clientEnv } from "src/env/schema.mjs";
+import { N_MONS } from "./mons";
 
 const hashids = new Hashids(clientEnv.NEXT_PUBLIC_HASHIDS_SALT, 5);
 
@@ -24,4 +25,26 @@ export function numberFromHashidParam(param: Param) {
   const n = numberFromHashid(str);
   if (n == undefined) return undefined;
   return n;
+}
+
+export function randomPageHref(): string {
+  const a = Math.floor(Math.random() * N_MONS);
+  const b = Math.floor(Math.random() * N_MONS);
+  if (a === b) return randomPageHref();
+
+  const id = a * N_MONS + b;
+  const hashid = hashids.encode(id);
+  return `/${hashid}`;
+}
+
+export function generatePagePaths() {
+  const ids: number[] = [];
+  for (let i = 0; i < N_MONS; i++) {
+    for (let j = 0; j < N_MONS; j++) {
+      if (i !== j) ids.push(i * N_MONS + j);
+    }
+  }
+  const paths = ids.map((id) => ({ params: { hashid: hashids.encode(id) } }));
+
+  return paths;
 }
