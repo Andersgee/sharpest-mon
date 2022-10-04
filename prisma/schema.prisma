@@ -6,10 +6,21 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mysql"
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id String @id @default(cuid())
+model Vote {
+    id               String   @id @default(cuid())
+    createdAt        DateTime @default(now())
+    forPokemon       Pokemon  @relation(name: "votesFor", fields: [forPokemonId], references: [id])
+    forPokemonId     Int
+    againstPokemon   Pokemon  @relation(name: "votesAgainst", fields: [againstPokemonId], references: [id])
+    againstPokemonId Int
+}
+
+model Pokemon {
+    id           Int    @id
+    votesFor     Vote[] @relation("votesFor")
+    votesAgainst Vote[] @relation("votesAgainst")
 }
