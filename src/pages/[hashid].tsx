@@ -32,7 +32,7 @@ const Page: NextPage<Props> = ({ pageId, pokemonA, pokemonB, stats }) => {
   return (
     <>
       <Head
-        title="Sharpest-mon"
+        title="sharpest-mon"
         description={`Who is sharper? ${pokemonA.name} vs ${pokemonB.name}. ${
           stats.percentForAWhenBoth > stats.percentForBWhenBoth
             ? `${pokemonA.name} is winning.`

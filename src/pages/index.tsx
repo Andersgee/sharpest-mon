@@ -23,10 +23,11 @@ const Page: NextPage<Props> = ({ stats }) => {
   return (
     <>
       <Head
-        title="Sharpest-mon"
-        description="Who is sharper?"
+        title="sharpest-mon"
+        description="Who is the sharpest pokemon?"
         domainUrl="https://sharpest.andyfx.net"
         url="https://sharpest.andyfx.net"
+        imageUrl="/images/questionmark.png"
       />
       <div className="flex justify-end">
         <ThemeToggleButton />
