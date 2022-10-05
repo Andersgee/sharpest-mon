@@ -87,7 +87,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const props: Props = { stats };
     return {
       props,
-      revalidate: 10, //at most once every 60 seconds
+      revalidate: 60, //at most once every x seconds
     };
   } catch (error) {
     throw new Error("something went wrong");

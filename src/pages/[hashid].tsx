@@ -6,7 +6,7 @@ import { Head } from "src/components/Head";
 import { PokemonVoter } from "src/components/PokemonVoter";
 import { ThemeToggleButton } from "src/components/ThemeToggleButton";
 import { prisma } from "src/server/db/client";
-import { hashidFromNumber, numberFromHashidParam } from "src/utils/hashids";
+import { generatePagePaths, hashidFromNumber, numberFromHashidParam } from "src/utils/hashids";
 import { ALL_MONS, N_MONS, type Pokemon } from "src/utils/mons";
 
 type Props = {
@@ -17,11 +17,13 @@ type Props = {
 };
 
 const Page: NextPage<Props> = ({ pageId, pokemonA, pokemonB, stats }) => {
+  /*
   const router = useRouter();
 
   if (router.isFallback) {
     return <div>fallback</div>;
   }
+  */
 
   const text0 = "In this particular comparison, you are the first!";
   const text1 = `In this particular comparison, ${stats.percentForAWhenBoth}% of votes went to ${pokemonA.name}.`;
@@ -88,8 +90,8 @@ export default Page;
 // props
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  //return { paths: generatePagePaths(), fallback: false };
-  return { paths: [], fallback: true };
+  return { paths: generatePagePaths(), fallback: false };
+  //return { paths: [], fallback: true };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {

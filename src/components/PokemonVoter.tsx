@@ -17,17 +17,15 @@ export function PokemonVoter({ pageId, pokemonA, pokemonB }: Props) {
   const [href, setHref] = useState("");
 
   useEffect(() => {
-    console.log("sethref");
     const newHref = randomPageHref(pageId);
-    console.log(`setting newHref: ${newHref}`);
+    //console.log(`setting newHref: ${newHref}`);
     setHref(newHref);
   }, [pageId]);
 
   useEffect(() => {
     if (href) {
-      console.log(`prefetching href: ${href}`);
+      //console.log(`prefetching href: ${href}`);
       router.prefetch(href);
-      //yes this only fires once. router is finicky.
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [href]);

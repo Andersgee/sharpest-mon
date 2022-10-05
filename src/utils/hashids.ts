@@ -46,6 +46,5 @@ export function generatePagePaths() {
     }
   }
   const paths = ids.map((id) => ({ params: { hashid: hashids.encode(id) } }));
-
   return paths;
 }
