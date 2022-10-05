@@ -27,7 +27,7 @@ const Page: NextPage<Props> = ({ stats }) => {
         description="Who is the sharpest pokemon?"
         domainUrl="https://sharpest.andyfx.net"
         url="https://sharpest.andyfx.net"
-        imageUrl="/images/questionmark.png"
+        imageUrl="/images/badge45.png"
       />
       <div className="flex justify-end">
         <ThemeToggleButton />
