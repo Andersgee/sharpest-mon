@@ -17,13 +17,12 @@ type Props = {
 };
 
 const Page: NextPage<Props> = ({ pageId, pokemonA, pokemonB, stats }) => {
-  /*
   const router = useRouter();
 
   if (router.isFallback) {
-    return <div>fallback</div>;
+    //possibly skeleton here
+    return <div></div>;
   }
-  */
 
   const text0 = "In this particular comparison, you are the first!";
   const text1 = `In this particular comparison, ${stats.percentForAWhenBoth}% of votes went to ${pokemonA.name}.`;
@@ -90,8 +89,8 @@ export default Page;
 // props
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  return { paths: generatePagePaths(), fallback: false };
-  //return { paths: [], fallback: true };
+  //return { paths: generatePagePaths(), fallback: false };
+  return { paths: [], fallback: true };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
