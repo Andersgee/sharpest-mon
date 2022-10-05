@@ -1,9 +1,9 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import type { GetStaticProps, NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Head } from "src/components/Head";
+import { PokeImage } from "src/components/PokeImage";
 import { ThemeToggleButton } from "src/components/ThemeToggleButton";
 import { prisma } from "src/server/db/client";
 import { randomPageHref } from "src/utils/hashids";
@@ -52,13 +52,7 @@ const Page: NextPage<Props> = ({ stats }) => {
               {stats.map((stat) => (
                 <tr key={stat.id} className="border-b-2">
                   <td className="pr-1">
-                    <Image
-                      src={`/pokemon/${stat.id + 1}.png`}
-                      alt={ALL_MONS[stat.id]}
-                      width={48}
-                      height={48}
-                      style={{ imageRendering: "pixelated" }}
-                    />
+                    <PokeImage id={stat.id} alt={ALL_MONS[stat.id]!} width={48} height={48} />
                   </td>
                   <td className=" text-left capitalize">{ALL_MONS[stat.id]}</td>
                   <td className="text-gray-500">{stat.percent}%</td>

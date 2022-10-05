@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { randomPageHref } from "src/utils/hashids";
 import { Pokemon } from "src/utils/mons";
 import { trpc } from "src/utils/trpc";
+import { PokeImage } from "./PokeImage";
 
 type Props = {
   pageId: number;
@@ -41,28 +41,15 @@ export function PokemonVoter({ pageId, pokemonA, pokemonB }: Props) {
         className="hover:bg-white hover:shadow-md hover:dark:bg-neutral-800 hover:dark:shadow-sm hover:dark:shadow-black"
         onClick={onClick(pokemonA.id, pokemonB.id)}
       >
-        <PokeImage id={pokemonA.id} alt={pokemonA.name} />
+        <PokeImage id={pokemonA.id} alt={pokemonA.name} width={192} height={192} />
       </button>
 
       <button
         className="hover:bg-white hover:shadow-md hover:dark:bg-neutral-800 hover:dark:shadow-sm hover:dark:shadow-black"
         onClick={onClick(pokemonB.id, pokemonA.id)}
       >
-        <PokeImage id={pokemonB.id} alt={pokemonB.name} />
+        <PokeImage id={pokemonB.id} alt={pokemonB.name} width={192} height={192} />
       </button>
     </div>
-  );
-}
-
-function PokeImage({ id, alt }: { id: number; alt: string }) {
-  return (
-    <Image
-      priority
-      src={`/pokemon/${id + 1}.png`}
-      alt={alt}
-      width={192}
-      height={192}
-      style={{ imageRendering: "pixelated" }}
-    />
   );
 }
